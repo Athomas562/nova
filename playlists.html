@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Playlists — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html"
+                ><img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                ></a
+            >
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+        <div id="main" class="layout" style="grid-template-columns: 1fr">
+            <div>
+                <h1>Mes playlists</h1>
+                <div id="list"></div>
+            </div>
+        </div>
+
+        <div
+            id="plModal"
+            class="hidden"
+            style="
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+            "
+        >
+            <div class="form" style="margin: 0; max-width: 440px">
+                <button class="close icon-btn" style="float: right">✕</button>
+                <h1>Playlist</h1>
+                <label>Nom</label><input id="plName" type="text" />
+                <label>Description</label
+                ><textarea id="plDesc" rows="3"></textarea>
+                <label>Visibilité</label>
+                <select id="plVis">
+                    <option value="private">Privée</option>
+                    <option value="public">Publique</option>
+                </select>
+                <button id="plSave" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+
+        <script type="module">
+            import { initHeader } from "./js/ui.js";
+            import { initPlaylists } from "./js/playlists.js";
+            initHeader();
+            initPlaylists();
+        </script>
+    </body>
+</html>

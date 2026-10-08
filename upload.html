@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Publier — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+        <style>
+            .upload-form {
+                max-width: 720px;
+                margin: 30px auto;
+                display: grid;
+                gap: 14px;
+                padding: 0 12px;
+            }
+            .upload-form label {
+                display: block;
+                font-size: 13px;
+                color: var(--muted);
+                margin-bottom: 6px;
+            }
+            .upload-form input,
+            .upload-form textarea,
+            .upload-form select {
+                width: 100%;
+                padding: 10px 14px;
+                border-radius: 10px;
+                background: #17171f;
+                border: 1px solid #2a2a36;
+                color: var(--text);
+                font-family: inherit;
+                font-size: 14px;
+                outline: none;
+            }
+            .progress {
+                height: 8px;
+                background: #22222c;
+                border-radius: 999px;
+                overflow: hidden;
+            }
+            .progress > div {
+                height: 100%;
+                width: 0;
+                background: var(--accent);
+                transition: 0.2s;
+            }
+            .thumb-preview {
+                max-width: 320px;
+                border-radius: 10px;
+                display: none;
+                margin-top: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html"
+                ><img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                ></a
+            >
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+
+        <main class="upload-form">
+            <h1>Publier une vidéo</h1>
+            <div>
+                <label>Fichier vidéo *</label>
+                <input type="file" id="videoFile" accept="video/*" />
+            </div>
+            <div>
+                <label>Miniature (optionnelle — auto-générée sinon)</label>
+                <input type="file" id="thumbFile" accept="image/*" />
+                <img id="thumbPreview" class="thumb-preview" alt="" />
+            </div>
+            <div>
+                <label>Titre *</label>
+                <input type="text" id="title" maxlength="120" />
+            </div>
+            <div>
+                <label>Description</label>
+                <textarea id="description" rows="5"></textarea>
+            </div>
+            <div>
+                <label>Catégorie</label>
+                <select id="category">
+                    <option>Gaming</option>
+                    <option>Musique</option>
+                    <option>Technologie</option>
+                    <option>Divertissement</option>
+                    <option>Tutoriels</option>
+                    <option>Sport</option>
+                    <option>Actualités</option>
+                    <option>Animation</option>
+                    <option>Autre</option>
+                </select>
+            </div>
+            <div>
+                <label>Tags (séparés par des virgules)</label>
+                <input type="text" id="tags" placeholder="minecraft, survie" />
+            </div>
+            <div>
+                <label>Visibilité</label>
+                <select id="visibility">
+                    <option value="public">Public</option>
+                    <option value="unlisted">Non répertorié</option>
+                    <option value="private">Privé</option>
+                </select>
+            </div>
+            <div class="progress"><div id="progressBar"></div></div>
+            <div id="status" style="color: var(--muted); font-size: 14px"></div>
+            <button id="publishBtn" class="btn btn-primary">Publier</button>
+        </main>
+
+        <script type="module">
+            import { publishVideo } from "./js/upload.js";
+            import { initHeader, requireAuth, toast } from "./js/ui.js";
+
+            initHeader();
+            requireAuth();
+
+            const $ = (id) => document.getElementById(id);
+
+            $("thumbFile").addEventListener("change", (e) => {
+                const f = e.target.files[0];
+                if (!f) return;
+                $("thumbPreview").src = URL.createObjectURL(f);
+                $("thumbPreview").style.display = "block";
+            });
+
+            $("publishBtn").onclick = async () => {
+                const videoFile = $("videoFile").files[0];
+                const thumbFile = $("thumbFile").files[0];
+                const title = $("title").value.trim();
+                if (!videoFile || !title)
+                    return toast(
+                        "Ajoute un fichier vidéo et un titre.",
+                        "error",
+                    );
+
+                $("publishBtn").disabled = true;
+                $("status").textContent = "Upload en cours...";
+                try {
+                    const id = await publishVideo({
+                        videoFile,
+                        thumbFile,
+                        title,
+                        description: $("description").value.trim(),
+                        category: $("category").value,
+                        tags: $("tags").value,
+                        visibility: $("visibility").value,
+                        onProgress: (p) => {
+                            $("progressBar").style.width = p + "%";
+                            $("status").textContent = `Upload : ${p}%`;
+                        },
+                    });
+                    toast("Vidéo publiée", "success");
+                    setTimeout(
+                        () => (location.href = `watch.html?id=${id}`),
+                        600,
+                    );
+                } catch (e) {
+                    console.error(e);
+                    toast("Échec : " + e.message, "error");
+                    $("publishBtn").disabled = false;
+                    $("status").textContent = "";
+                }
+            };
+        </script>
+    </body>
+</html>

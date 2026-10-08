@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Studio — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html"
+                ><img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                ></a
+            >
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+
+        <div id="main" class="layout" style="grid-template-columns: 1fr">
+            <div>
+                <h1>Studio créateur</h1>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="label">Vues totales</div>
+                        <div class="value" id="statViews">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="label">Abonnés</div>
+                        <div class="value" id="statSubs">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="label">Likes totaux</div>
+                        <div class="value" id="statLikes">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="label">Vidéos</div>
+                        <div class="value" id="statVideos">0</div>
+                    </div>
+                </div>
+                <h2>Mes vidéos</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Miniature</th>
+                            <th>Titre</th>
+                            <th>Visibilité</th>
+                            <th>Vues</th>
+                            <th>Likes</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="videosTbody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div
+            id="editVideoModal"
+            class="hidden"
+            style="
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+            "
+        >
+            <div class="form" style="margin: 0; max-width: 520px">
+                <button class="close icon-btn" style="float: right">✕</button>
+                <h1>Modifier la vidéo</h1>
+                <label>Titre</label><input id="vTitle" type="text" />
+                <label>Description</label
+                ><textarea id="vDesc" rows="3"></textarea>
+                <label>Catégorie</label>
+                <select id="vCat">
+                    <option>Gaming</option>
+                    <option>Musique</option>
+                    <option>Technologie</option>
+                    <option>Divertissement</option>
+                    <option>Tutoriels</option>
+                    <option>Sport</option>
+                    <option>Actualités</option>
+                    <option>Animation</option>
+                    <option>Autre</option>
+                </select>
+                <label>Tags</label><input id="vTags" type="text" />
+                <label>Visibilité</label>
+                <select id="vVis">
+                    <option value="public">Public</option>
+                    <option value="unlisted">Non répertorié</option>
+                    <option value="private">Privé</option>
+                </select>
+                <label>Nouvelle miniature</label>
+                <input id="vNewThumb" type="file" accept="image/*" />
+                <img
+                    id="vThumbPreview"
+                    style="
+                        margin-top: 10px;
+                        max-width: 200px;
+                        border-radius: 8px;
+                    "
+                    alt=""
+                />
+                <button id="vSave" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div>
+
+        <script type="module">
+            import { initHeader } from "./js/ui.js";
+            import { initStudio } from "./js/studio.js";
+            initHeader();
+            initStudio();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Bibliothèque — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html"
+                ><img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                ></a
+            >
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+        <div id="main" class="layout" style="grid-template-columns: 1fr">
+            <div>
+                <h1>Bibliothèque</h1>
+                <div
+                    class="grid"
+                    style="
+                        grid-template-columns: repeat(
+                            auto-fill,
+                            minmax(220px, 1fr)
+                        );
+                    "
+                >
+                    <a href="history.html" class="card"
+                        ><div class="card-body">
+                            <h3 class="card-title">🕓 Historique</h3>
+                            <div class="card-meta">Vos vidéos regardées</div>
+                        </div></a
+                    >
+                    <a href="watch-later.html" class="card"
+                        ><div class="card-body">
+                            <h3 class="card-title">⏱️ À regarder plus tard</h3>
+                            <div class="card-meta">Votre liste de lecture</div>
+                        </div></a
+                    >
+                    <a href="playlists.html" class="card"
+                        ><div class="card-body">
+                            <h3 class="card-title">🎞️ Playlists</h3>
+                            <div class="card-meta">Vos playlists</div>
+                        </div></a
+                    >
+                    <a href="subscriptions.html" class="card"
+                        ><div class="card-body">
+                            <h3 class="card-title">📺 Abonnements</h3>
+                            <div class="card-meta">Vos chaînes suivies</div>
+                        </div></a
+                    >
+                    <a href="studio.html" class="card"
+                        ><div class="card-body">
+                            <h3 class="card-title">🎬 Studio</h3>
+                            <div class="card-meta">Gérer vos vidéos</div>
+                        </div></a
+                    >
+                </div>
+            </div>
+        </div>
+        <script type="module">
+            import { initHeader } from "./js/ui.js";
+            initHeader();
+        </script>
+    </body>
+</html>

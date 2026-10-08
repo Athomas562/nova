@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Connexion — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <div class="form">
+            <h1>Connexion</h1>
+            <label>Email</label>
+            <input id="email" type="email" autocomplete="email" />
+            <label>Mot de passe</label>
+            <input
+                id="password"
+                type="password"
+                autocomplete="current-password"
+            />
+            <button class="btn btn-primary" id="submit">Se connecter</button>
+            <button class="btn" id="google" style="margin-top: 10px">
+                Continuer avec Google
+            </button>
+            <button
+                class="btn btn-ghost"
+                id="forgot"
+                style="margin-top: 10px; width: 100%"
+            >
+                Mot de passe oublié ?
+            </button>
+            <div class="switch">
+                Pas de compte ? <a href="register.html">Créer un compte</a>
+            </div>
+        </div>
+
+        <script type="module">
+            import { login, loginGoogle, resetPassword } from "./js/auth.js";
+            import { toast } from "./js/ui.js";
+
+            document.getElementById("submit").onclick = async () => {
+                try {
+                    await login(
+                        document.getElementById("email").value.trim(),
+                        document.getElementById("password").value,
+                    );
+                    toast("Connexion réussie", "success");
+                    setTimeout(() => (location.href = "index.html"), 500);
+                } catch (e) {
+                    toast(e.message, "error");
+                }
+            };
+            document.getElementById("google").onclick = async () => {
+                try {
+                    await loginGoogle();
+                    location.href = "index.html";
+                } catch (e) {
+                    toast(e.message, "error");
+                }
+            };
+            document.getElementById("forgot").onclick = async () => {
+                const email = document.getElementById("email").value.trim();
+                if (!email) return toast("Entre ton email d'abord", "error");
+                try {
+                    await resetPassword(email);
+                    toast("Email envoyé", "success");
+                } catch (e) {
+                    toast(e.message, "error");
+                }
+            };
+        </script>
+    </body>
+</html>

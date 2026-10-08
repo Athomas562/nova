@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Abonnements — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html"
+                ><img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                ></a
+            >
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+        <div id="main" class="layout" style="grid-template-columns: 1fr">
+            <div>
+                <h1>Abonnements</h1>
+                <div id="feed"></div>
+            </div>
+        </div>
+        <script type="module">
+            import { initHeader } from "./js/ui.js";
+            import { initSubscriptions } from "./js/subscriptions.js";
+            initHeader();
+            initSubscriptions();
+        </script>
+    </body>
+</html>

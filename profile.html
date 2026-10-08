@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Profil — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html">
+                <img src="logo-icon.svg" alt="NovaTube" />
+                <span class="wordmark">Nova<span>Tube</span></span>
+            </a>
+            <form
+                class="searchbar"
+                onsubmit="
+                    event.preventDefault();
+                    location.href =
+                        'search.html?q=' + encodeURIComponent(this.q.value);
+                "
+            >
+                <input name="q" placeholder="Rechercher" />
+                <button>OK</button>
+            </form>
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+
+        <div
+            id="main"
+            class="layout"
+            style="grid-template-columns: 1fr; max-width: 900px"
+        >
+            <div>
+                <!-- En-tête profil -->
+                <div
+                    class="row"
+                    style="align-items: flex-start; gap: 24px; flex-wrap: wrap"
+                >
+                    <img
+                        class="avatar-xl"
+                        id="pAvatar"
+                        src="logo-icon.svg"
+                        alt=""
+                    />
+                    <div style="flex: 1; min-width: 220px">
+                        <h1 id="pName" style="margin: 0 0 4px">—</h1>
+                        <div class="muted" id="pUsername">@—</div>
+                        <div
+                            class="muted"
+                            id="pEmail"
+                            style="margin-top: 4px"
+                        ></div>
+                        <div
+                            class="muted"
+                            id="pCreated"
+                            style="margin-top: 4px"
+                        ></div>
+                    </div>
+                    <div class="row" style="gap: 8px">
+                        <button
+                            class="btn btn-primary"
+                            id="editBtn"
+                            style="display: none"
+                        >
+                            ✏️ Modifier le profil
+                        </button>
+                        <a class="btn" href="channel.html" id="viewChannel"
+                            >Voir ma chaîne</a
+                        >
+                        <a class="btn" href="studio.html">Studio</a>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <p
+                    id="pDesc"
+                    style="
+                        margin-top: 24px;
+                        color: #c9c9d4;
+                        white-space: pre-wrap;
+                    "
+                ></p>
+
+                <!-- Stats -->
+                <div class="stats" style="margin-top: 28px">
+                    <div class="stat">
+                        <div class="label">Abonnés</div>
+                        <div class="value" id="statSubs">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="label">Vidéos publiées</div>
+                        <div class="value" id="statVideos">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="label">Vues totales</div>
+                        <div class="value" id="statViews">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modale d'édition -->
+        <div
+            id="editModal"
+            class="hidden"
+            style="
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.75);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 100;
+                padding: 20px;
+                overflow-y: auto;
+            "
+        >
+            <div
+                class="form"
+                style="
+                    margin: 0;
+                    max-width: 520px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                "
+            >
+                <button
+                    class="close icon-btn"
+                    style="float: right; font-size: 20px"
+                >
+                    ✕
+                </button>
+                <h1>Modifier le profil</h1>
+
+                <label>Avatar</label>
+                <div class="row" style="gap: 14px; align-items: center">
+                    <img
+                        id="editAvatarPreview"
+                        class="avatar-lg"
+                        src="logo-icon.svg"
+                        alt=""
+                    />
+                    <label class="btn" style="cursor: pointer">
+                        Changer
+                        <input
+                            type="file"
+                            id="editAvatar"
+                            accept="image/*"
+                            style="display: none"
+                        />
+                    </label>
+                </div>
+
+                <label>Bannière</label>
+                <div class="row" style="gap: 14px; align-items: center">
+                    <img
+                        id="editBannerPreview"
+                        src="logo-icon.svg"
+                        alt=""
+                        style="
+                            width: 180px;
+                            height: 80px;
+                            object-fit: cover;
+                            border-radius: 8px;
+                            background: #26262f;
+                        "
+                    />
+                    <label class="btn" style="cursor: pointer">
+                        Changer
+                        <input
+                            type="file"
+                            id="editBanner"
+                            accept="image/*"
+                            style="display: none"
+                        />
+                    </label>
+                </div>
+
+                <label>Nom affiché</label>
+                <input id="editName" type="text" maxlength="50" />
+
+                <label>Username</label>
+                <input
+                    id="editUsername"
+                    type="text"
+                    maxlength="30"
+                    pattern="[a-zA-Z0-9_]+"
+                />
+
+                <label>Description</label>
+                <textarea id="editDesc" rows="4" maxlength="500"></textarea>
+
+                <button id="editSave" class="btn btn-primary">
+                    Enregistrer
+                </button>
+                <button
+                    id="editCancel"
+                    class="btn btn-ghost"
+                    style="margin-top: 8px"
+                >
+                    Annuler
+                </button>
+            </div>
+        </div>
+
+        <script type="module">
+            import {
+                initHeader,
+                requireAuth,
+                timeAgo,
+                escapeHtml,
+                getParam,
+                toast,
+                formatViews,
+                formatSubs,
+            } from "./js/ui.js";
+            import { getUserProfile } from "./js/auth.js";
+            import { uploadImageToImgbb } from "./js/avatar.js";
+            import { db } from "./js/firebase.js";
+            import {
+                doc,
+                updateDoc,
+                getDocs,
+                collection,
+                query,
+                where,
+            } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+            initHeader();
+            const me = await requireAuth();
+            const id = getParam("id") || me.uid;
+            const isMine = me.uid === id;
+
+            const u = await getUserProfile(id);
+            if (!u) {
+                document.getElementById("main").innerHTML =
+                    `<div class="empty"><h2>Profil introuvable</h2></div>`;
+                throw new Error("no profile");
+            }
+
+            // ---------- Affichage profil ----------
+            document.title = `${u.displayName || u.username} — NovaTube`;
+            document.getElementById("pAvatar").src =
+                u.avatar || "logo-icon.svg";
+            document.getElementById("pName").textContent =
+                u.displayName || u.username;
+            document.getElementById("pUsername").textContent =
+                "@" + (u.username || "");
+            document.getElementById("pEmail").textContent = u.email || "";
+            document.getElementById("pCreated").textContent =
+                "Compte créé " + timeAgo(u.createdAt);
+            document.getElementById("pDesc").textContent = u.description || "";
+            document.getElementById("statSubs").textContent = formatSubs(
+                u.subscribers || 0,
+            ).replace(/ abonné(s)?/, "");
+            document.getElementById("viewChannel").href =
+                `channel.html?id=${id}`;
+
+            // Stats vidéos
+            try {
+                const vSnap = await getDocs(
+                    query(
+                        collection(db, "videos"),
+                        where("authorId", "==", id),
+                    ),
+                );
+                const videos = vSnap.docs.map((d) => d.data());
+                document.getElementById("statVideos").textContent =
+                    videos.length;
+                const totalViews = videos.reduce(
+                    (s, v) => s + (v.views || 0),
+                    0,
+                );
+                document.getElementById("statViews").textContent = totalViews;
+            } catch {}
+
+            // ---------- Édition (si c'est mon profil) ----------
+            if (!isMine) throw new Error("not mine");
+
+            const editBtn = document.getElementById("editBtn");
+            editBtn.style.display = "inline-flex";
+
+            const modal = document.getElementById("editModal");
+            const closeBtn = modal.querySelector(".close");
+
+            let newAvatarUrl = null;
+            let newBannerUrl = null;
+
+            function openModal() {
+                document.getElementById("editName").value = u.displayName || "";
+                document.getElementById("editUsername").value =
+                    u.username || "";
+                document.getElementById("editDesc").value = u.description || "";
+                document.getElementById("editAvatarPreview").src =
+                    u.avatar || "logo-icon.svg";
+                document.getElementById("editBannerPreview").src =
+                    u.banner || "logo-icon.svg";
+                newAvatarUrl = null;
+                newBannerUrl = null;
+                modal.classList.remove("hidden");
+            }
+
+            function closeModal() {
+                modal.classList.add("hidden");
+            }
+
+            editBtn.onclick = openModal;
+            closeBtn.onclick = closeModal;
+            document.getElementById("editCancel").onclick = closeModal;
+
+            modal.addEventListener("click", (e) => {
+                if (e.target === modal) closeModal();
+            });
+
+            // ---------- Upload avatar ----------
+            document
+                .getElementById("editAvatar")
+                .addEventListener("change", async (e) => {
+                    const f = e.target.files[0];
+                    if (!f) return;
+
+                    // Aperçu instantané
+                    document.getElementById("editAvatarPreview").src =
+                        URL.createObjectURL(f);
+
+                    try {
+                        toast("Upload de l'avatar…");
+                        newAvatarUrl = await uploadImageToImgbb(f);
+                        toast("Avatar prêt", "success");
+                    } catch (err) {
+                        console.error(err);
+                        toast("Échec de l'upload avatar", "error");
+                    }
+                });
+
+            // ---------- Upload bannière ----------
+            document
+                .getElementById("editBanner")
+                .addEventListener("change", async (e) => {
+                    const f = e.target.files[0];
+                    if (!f) return;
+
+                    document.getElementById("editBannerPreview").src =
+                        URL.createObjectURL(f);
+
+                    try {
+                        toast("Upload de la bannière…");
+                        newBannerUrl = await uploadImageToImgbb(f);
+                        toast("Bannière prête", "success");
+                    } catch (err) {
+                        console.error(err);
+                        toast("Échec de l'upload bannière", "error");
+                    }
+                });
+
+            // ---------- Sauvegarde ----------
+            document.getElementById("editSave").onclick = async () => {
+                const btn = document.getElementById("editSave");
+                btn.disabled = true;
+
+                try {
+                    const data = {
+                        displayName: document
+                            .getElementById("editName")
+                            .value.trim(),
+                        username: document
+                            .getElementById("editUsername")
+                            .value.trim()
+                            .replace(/\s+/g, "_"),
+                        description: document
+                            .getElementById("editDesc")
+                            .value.trim(),
+                    };
+
+                    if (!data.displayName)
+                        throw new Error("Le nom ne peut pas être vide");
+                    if (!data.username)
+                        throw new Error("Le username ne peut pas être vide");
+                    if (!/^[a-zA-Z0-9_]+$/.test(data.username)) {
+                        throw new Error(
+                            "Username : lettres, chiffres et _ uniquement",
+                        );
+                    }
+
+                    if (newAvatarUrl) data.avatar = newAvatarUrl;
+                    if (newBannerUrl) data.banner = newBannerUrl;
+
+                    await updateDoc(doc(db, "users", id), data);
+                    toast("Profil mis à jour", "success");
+                    setTimeout(() => location.reload(), 500);
+                } catch (err) {
+                    console.error(err);
+                    toast(
+                        err.message || "Erreur pendant la sauvegarde",
+                        "error",
+                    );
+                } finally {
+                    btn.disabled = false;
+                }
+            };
+        </script>
+    </body>
+</html>

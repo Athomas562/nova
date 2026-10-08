@@ -1,0 +1,81 @@
+@media (max-width: 1100px) {
+    .watch-layout {
+        grid-template-columns: 1fr;
+    }
+    .watch-layout .side-list {
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 900px) {
+    .layout {
+        grid-template-columns: 80px 1fr;
+    }
+    .sidebar a span {
+        display: none;
+    }
+    .sidebar a {
+        justify-content: center;
+        padding: 12px;
+    }
+    .sidebar hr {
+        margin: 8px 0;
+    }
+}
+
+@media (max-width: 640px) {
+    header.topbar {
+        padding: 10px 12px;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    header.topbar .logo .wordmark {
+        display: none;
+    }
+    .searchbar {
+        order: 3;
+        width: 100%;
+        max-width: none;
+        flex-basis: 100%;
+    }
+    .layout {
+        grid-template-columns: 1fr;
+        padding: 12px;
+        gap: 12px;
+    }
+    .sidebar {
+        display: none;
+    }
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+    .watch-layout {
+        padding: 12px;
+        gap: 16px;
+    }
+    .form {
+        margin: 20px 12px;
+        padding: 22px;
+    }
+    .channel-banner {
+        height: 120px;
+    }
+    .channel-header {
+        padding: 14px 0;
+    }
+    .channel-header h1 {
+        font-size: 22px;
+    }
+    .avatar-xl {
+        width: 96px;
+        height: 96px;
+    }
+    .table {
+        font-size: 13px;
+    }
+    .table img.thumb-sm {
+        width: 60px;
+        height: 34px;
+    }
+}

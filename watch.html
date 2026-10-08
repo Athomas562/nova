@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Regarder — NovaTube</title>
+        <link rel="icon" href="favicon.svg" />
+        <link rel="stylesheet" href="css/style.css" />
+        <link rel="stylesheet" href="css/responsive.css" />
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="logo" href="index.html">
+                <img src="logo-icon.svg" alt="" /><span class="wordmark"
+                    >Nova<span>Tube</span></span
+                >
+            </a>
+            <form
+                class="searchbar"
+                onsubmit="
+                    event.preventDefault();
+                    location.href =
+                        'search.html?q=' + encodeURIComponent(this.q.value);
+                "
+            >
+                <input name="q" placeholder="Rechercher" />
+                <button>OK</button>
+            </form>
+            <button
+                id="loginBtn"
+                class="btn"
+                onclick="location.href = 'login.html'"
+            >
+                Connexion
+            </button>
+            <button
+                id="createBtn"
+                class="btn btn-primary"
+                style="display: none"
+                onclick="location.href = 'upload.html'"
+            >
+                Créer
+            </button>
+            <button id="logoutBtn" class="btn btn-ghost" style="display: none">
+                Déconnexion
+            </button>
+            <div id="userBox" style="display: none"></div>
+        </header>
+
+        <div id="main" class="watch-layout">
+            <div>
+                <div class="player">
+                    <video id="videoEl" controls playsinline></video>
+                </div>
+                <h1 class="watch-title" id="titleEl"></h1>
+                <div class="watch-meta" id="metaEl"></div>
+
+                <div class="watch-actions">
+                    <button class="btn" id="likeBtn">
+                        👍 <span class="label">J'aime</span> ·
+                        <span id="likeCount">0</span>
+                    </button>
+                    <button class="btn" id="saveBtn">🔖 Enregistrer</button>
+                    <button class="btn" id="shareBtn">↗ Partager</button>
+                </div>
+
+                <div class="channel-row">
+                    <a id="authorAvatarLink" href="#"
+                        ><img
+                            class="avatar-md"
+                            id="authorAvatar"
+                            src="logo-icon.svg"
+                            alt=""
+                    /></a>
+                    <div class="info">
+                        <a id="authorName" class="name" href="#">—</a>
+                        <div class="subs" id="authorSubs">0 abonné</div>
+                    </div>
+                    <button class="btn btn-primary" id="subscribeBtn">
+                        S'abonner
+                    </button>
+                </div>
+
+                <div class="description-box" id="descEl"></div>
+
+                <div class="comments">
+                    <h3>Commentaires (<span id="commentsCount">0</span>)</h3>
+                    <div class="comment-form" id="commentForm"></div>
+                    <div id="commentsList"></div>
+                </div>
+            </div>
+
+            <aside>
+                <h3 style="margin: 0 0 12px">Suggestions</h3>
+                <div class="side-list" id="suggestions"></div>
+            </aside>
+        </div>
+
+        <script type="module">
+            import { initHeader } from "./js/ui.js";
+            import { initWatch } from "./js/watch.js";
+            initHeader();
+            initWatch();
+        </script>
+    </body>
+</html>
